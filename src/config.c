@@ -958,6 +958,12 @@ static int oidc_check_config_openid_openidc(server_rec *s, oidc_cfg *c) {
 				r_uri.scheme);
 	}
 
+	if (r_uri.path == NULL) {
+		oidc_serror(s,
+				"the URL path of the configured OIDCRedirectURI MUST NOT be null");
+		return HTTP_INTERNAL_SERVER_ERROR;
+	}
+
 	if (c->cookie_domain != NULL) {
 		char *p = strstr(r_uri.hostname, c->cookie_domain);
 		if ((p == NULL) || (apr_strnatcmp(c->cookie_domain, p) != 0)) {
